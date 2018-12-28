@@ -82,6 +82,14 @@ type Rate struct {
 	count  int           // Used internally for deprecated `RateLimit` interface only
 }
 
+// NewRate create Rate with period and count
+func NewRate(count int, period time.Duration) Rate {
+	return Rate{
+		period: period,
+		count:  count,
+	}
+}
+
 // RateQuota describes the number of requests allowed per time period.
 // MaxRate specified the maximum sustained rate of requests and must
 // be greater than zero. MaxBurst defines the number of requests that
@@ -135,7 +143,7 @@ type GCRARateLimiter struct {
 
 // NewGCRARateLimiter creates a GCRARateLimiter. quota.Count defines
 // the maximum number of requests permitted in an instantaneous burst
-// and quota.Count / quota.Period defines the maximum sustained
+// and quota.Count / quota.period defines the maximum sustained
 // rate. For example, PerMin(60) permits 60 requests instantly per key
 // followed by one request per second indefinitely whereas PerSec(1)
 // only permits one request per second with no tolerance for bursts.
